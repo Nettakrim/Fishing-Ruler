@@ -1,4 +1,4 @@
 {
     "fishing_ruler.length" : "%s/32",
-    "fishing_ruler.snapped" : "! 32/32 !"
+    "fishing_ruler.snapped" : "32.0/32"
 }

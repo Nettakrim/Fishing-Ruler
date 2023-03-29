@@ -9,7 +9,7 @@
     "Nettakrim"
   ],
   "contact": {
-    "sources": "https://github.com/FabricMC/fabric-example-mod"
+    "sources": "https://github.com/Nettakrim/Fishing-Ruler"
   },
 
   "license": "LGPL-3.0",
@@ -27,8 +27,8 @@
 
   "depends": {
     "fabricloader": ">=0.14.6",
-    "fabric-api": "*",
-    "minecraft": ">=1.19.2",
+    "fabric": "*",
+    "minecraft": ">=1.19.0",
     "java": ">=17"
   },
   "suggests": {
