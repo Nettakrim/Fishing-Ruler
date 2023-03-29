@@ -11,6 +11,8 @@ import net.minecraft.util.Formatting;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
+import com.nettakrim.fishing_ruler.commands.FishingRulerCommands;
+
 public class FishingRulerClient implements ClientModInitializer {
 	public static final String MODID = "fishing_ruler";
 	public static final Logger LOGGER = LoggerFactory.getLogger("Fishing Ruler");
@@ -23,6 +25,8 @@ public class FishingRulerClient implements ClientModInitializer {
 	@Override
 	public void onInitializeClient() {
 		client = MinecraftClient.getInstance();
+
+		FishingRulerCommands.initialize();
 
 		ClientTickEvents.END_CLIENT_TICK.register(client -> {update();});
 	}
