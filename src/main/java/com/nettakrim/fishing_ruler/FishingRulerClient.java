@@ -18,6 +18,7 @@ public class FishingRulerClient implements ClientModInitializer {
 	public static MinecraftClient client;
 	private static int framesSinceUpdate = 8;
 	private static double lastLength = 0;
+	public static boolean allowSnapInfer = true;
 
 	@Override
 	public void onInitializeClient() {
@@ -28,8 +29,13 @@ public class FishingRulerClient implements ClientModInitializer {
 
 	public static void update() {
 		//throwing the line straight down can cause the snapped indicator to not show up
-		if (framesSinceUpdate == 1 && lastLength > 31 && lastLength <= 32) {
-			updateText(32.1D, false, State.DEFAULT);
+		if (allowSnapInfer) {
+			if (framesSinceUpdate == 1 && lastLength > 31 && lastLength <= 32) {
+				updateText(32.1D, false, State.DEFAULT);
+			}
+		} else {
+			allowSnapInfer = true;
+			framesSinceUpdate = 8;
 		}
 		if (framesSinceUpdate < 8) {
 			framesSinceUpdate++;
@@ -83,7 +89,7 @@ public class FishingRulerClient implements ClientModInitializer {
 			}
 		}
 
-		if (updateLast) {
+		if (updateLast && allowSnapInfer) {
 			framesSinceUpdate = 0;
 			lastLength = length;
 		}
