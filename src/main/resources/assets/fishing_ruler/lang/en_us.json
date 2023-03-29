@@ -3,15 +3,15 @@
     "fishing_ruler.snapped" : "32.0/32",
 
 
-    "fishing_ruler.help.length" : "\nxx.x/32 - Current Length (line breaks at 32)\n\n",
+    "fishing_ruler.help.length" : "\nxx.x/32 - Current Length (Line Breaks at 32 blocks)\n\n",
 
     "fishing_ruler.help.air" : "16.0/32 - In Air\n",
     "fishing_ruler.help.ground" : "16.0/32 - On Ground\n",
     "fishing_ruler.help.entity" : "16.0/32 - Attached to Entity\n\n",
 
     "fishing_ruler.help.small_water" : "16.0/32 - In Small water source\n",
-    "fishing_ruler.help.large_water" : "16.0/32 - In Large water source (treasure can be fished)\n",
-    "fishing_ruler.help.not_exposed" : "16.0/32 - Water not open to Sky (2x slower fishing)\n",
+    "fishing_ruler.help.large_water" : "16.0/32 - In Large water source (Treasure can be Fished)\n",
+    "fishing_ruler.help.not_exposed" : "16.0/32 - Water not open to Sky (2x Slower Fishing)\n",
     "fishing_ruler.help.in_rain" : "16.0/32 - In Rain (20% quicker fishing)\n",
     "fishing_ruler.help.fish_on_hook" : "16.0/32 - Fish Bit Hook and can be Caught\n\n",
 
