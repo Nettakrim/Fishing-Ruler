@@ -102,9 +102,9 @@ public class FishingRulerClient implements ClientModInitializer {
 		TextColor.parse("#FFFFFF"),  // ON_GROUND
 		TextColor.parse("#8EFF80"),  // IN_ENTITY
 		TextColor.parse("#00AAAA"),  // IN_SMALL_WATER
-		TextColor.parse("#51C9C9"),  // IN_OPEN_WATER
+		TextColor.parse("#35DEDE"),  // IN_OPEN_WATER
 		TextColor.parse("#265694"),  // NOT_EXPOSED
-		TextColor.parse("#4E83DE"),  // RAINED_ON
+		TextColor.parse("#518AED"),  // RAINED_ON
 		TextColor.parse("#54fBA8"),  // HAS_FISH
 		TextColor.parse("#ED691C"),  // NEAR_DESPAWN
 		TextColor.parse("#FFAA00"),  // NEAR_SNAP
