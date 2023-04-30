@@ -6,7 +6,7 @@ import net.minecraft.client.MinecraftClient;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
-import net.minecraft.util.Formatting;
+import net.minecraft.text.TextColor;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -56,42 +56,13 @@ public class FishingRulerClient implements ClientModInitializer {
 		}
 
 		if (length > 32) {
-			text.setStyle(Style.EMPTY.withColor(Formatting.DARK_RED));
+			state = State.SNAPPED;
 		} else if (length > 30) {
-			text.setStyle(Style.EMPTY.withColor(Formatting.RED));
+			state = State.VERY_NEAR_SNAP;
 		} else if (length > 28) {
-			text.setStyle(Style.EMPTY.withColor(Formatting.GOLD));
-		} else {
-			switch (state) {
-				case DEFAULT:
-					text.setStyle(Style.EMPTY.withColor(Formatting.GRAY));
-					break;
-				case ON_GROUND:
-					text.setStyle(Style.EMPTY.withColor(Formatting.WHITE));
-					break;
-				case IN_ENTITY:
-					text.setStyle(Style.EMPTY.withColor(Formatting.GREEN));
-					break;
-				case IN_SMALL_WATER:
-					text.setStyle(Style.EMPTY.withColor(Formatting.DARK_AQUA));
-					break;
-				case IN_OPEN_WATER:
-					text.setStyle(Style.EMPTY.withColor(Formatting.AQUA));
-					break;
-				case NOT_EXPOSED:
-					text.setStyle(Style.EMPTY.withColor(Formatting.DARK_AQUA));
-					break;
-				case RAINED_ON:
-					text.setStyle(Style.EMPTY.withColor(Formatting.BLUE));
-					break;
-				case HAS_FISH:
-					text.setStyle(Style.EMPTY.withColor(Formatting.GREEN));
-					break;
-				case NEAR_DESPAWN:
-					text.setStyle(Style.EMPTY.withColor(Formatting.GOLD));
-					break;
-			}
-		}
+			state = State.NEAR_SNAP;
+		} 
+		text.setStyle(getStyle(state));
 
 		if (updateLast && allowSnapInfer) {
 			framesSinceUpdate = 0;
@@ -116,6 +87,28 @@ public class FishingRulerClient implements ClientModInitializer {
 		NOT_EXPOSED,
 		RAINED_ON,
 		HAS_FISH,
-		NEAR_DESPAWN
+		NEAR_DESPAWN,
+		NEAR_SNAP,
+		VERY_NEAR_SNAP,
+		SNAPPED
 	}
+
+	public static Style getStyle(State state) {
+		return Style.EMPTY.withColor(stateToColor[state.ordinal()]);
+	}
+
+	private static TextColor[] stateToColor = new TextColor[] {
+		TextColor.parse("#AAAAAA"),  // DEFAULT
+		TextColor.parse("#FFFFFF"),  // ON_GROUND
+		TextColor.parse("#8EFF80"),  // IN_ENTITY
+		TextColor.parse("#00AAAA"),  // IN_SMALL_WATER
+		TextColor.parse("#51C9C9"),  // IN_OPEN_WATER
+		TextColor.parse("#265694"),  // NOT_EXPOSED
+		TextColor.parse("#4E83DE"),  // RAINED_ON
+		TextColor.parse("#54fBA8"),  // HAS_FISH
+		TextColor.parse("#ED691C"),  // NEAR_DESPAWN
+		TextColor.parse("#FFAA00"),  // NEAR_SNAP
+		TextColor.parse("#FF5555"),  // VERY_NEAR_SNAP
+		TextColor.parse("#DE2F2F")   // SNAPPED
+	};
 }

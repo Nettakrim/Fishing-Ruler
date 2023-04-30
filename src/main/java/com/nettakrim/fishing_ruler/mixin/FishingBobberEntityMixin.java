@@ -9,7 +9,6 @@ import net.minecraft.entity.player.PlayerEntity;
 import net.minecraft.entity.projectile.FishingBobberEntity;
 import net.minecraft.entity.projectile.ProjectileEntity;
 import net.minecraft.fluid.FluidState;
-import net.minecraft.item.ItemStack;
 import net.minecraft.registry.tag.FluidTags;
 import net.minecraft.util.math.BlockPos;
 import net.minecraft.world.World;
@@ -19,7 +18,6 @@ import org.spongepowered.asm.mixin.Shadow;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
-import org.spongepowered.asm.mixin.injection.callback.CallbackInfoReturnable;
 
 @Mixin(FishingBobberEntity.class)
 public abstract class FishingBobberEntityMixin extends ProjectileEntity {
@@ -32,7 +30,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	@Shadow private Entity hookedEntity;
 	@Shadow private int outOfOpenWaterTicks;
 	@Shadow private int hookCountdown;
-	@Shadow abstract public boolean isOpenOrWaterAround(BlockPos pos);
+	@Shadow abstract protected boolean isOpenOrWaterAround(BlockPos pos);
 	@Shadow private boolean caughtFish;
 	@Shadow private int removalTimer;
 
@@ -62,12 +60,12 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		}
 
 		if (inWaterCountdown > 0) {
-			if (isOpenWater) {
-				BlockPos up = blockPos.up();
+			BlockPos up = blockPos.up();
+			if (!world.isSkyVisible(up) && !world.getFluidState(up).isIn(FluidTags.WATER)) {
+				state = State.NOT_EXPOSED;
+			} else if (isOpenWater) {
 				if (world.hasRain(up)) {
 					state = State.RAINED_ON;
-				} else if (!world.isSkyVisible(up) && !world.getFluidState(up).isIn(FluidTags.WATER)) {
-					state = State.NOT_EXPOSED;
 				} else {
 					state = State.IN_OPEN_WATER;
 				}
