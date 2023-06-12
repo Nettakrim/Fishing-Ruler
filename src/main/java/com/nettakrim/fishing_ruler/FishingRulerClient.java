@@ -28,7 +28,7 @@ public class FishingRulerClient implements ClientModInitializer {
 
 		FishingRulerCommands.initialize();
 
-		ClientTickEvents.END_CLIENT_TICK.register(client -> {update();});
+		ClientTickEvents.END_CLIENT_TICK.register(client -> update());
 	}
 
 	public static void update() {
@@ -97,12 +97,12 @@ public class FishingRulerClient implements ClientModInitializer {
 		return Style.EMPTY.withColor(stateToColor[state.ordinal()]);
 	}
 
-	private static TextColor[] stateToColor = new TextColor[] {
+	private static final TextColor[] stateToColor = new TextColor[] {
 		TextColor.parse("#AAAAAA"),  // DEFAULT
 		TextColor.parse("#FFFFFF"),  // ON_GROUND
 		TextColor.parse("#8EFF80"),  // IN_ENTITY
-		TextColor.parse("#00AAAA"),  // IN_SMALL_WATER
-		TextColor.parse("#35DEDE"),  // IN_OPEN_WATER
+		TextColor.parse("#009C9C"),  // IN_SMALL_WATER
+		TextColor.parse("#53EDED"),  // IN_OPEN_WATER
 		TextColor.parse("#265694"),  // NOT_EXPOSED
 		TextColor.parse("#518AED"),  // RAINED_ON
 		TextColor.parse("#54fBA8"),  // HAS_FISH

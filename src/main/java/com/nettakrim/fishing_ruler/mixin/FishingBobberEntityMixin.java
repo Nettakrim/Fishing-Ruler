@@ -28,8 +28,6 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 
 	@Shadow abstract public PlayerEntity getPlayerOwner();
 	@Shadow private Entity hookedEntity;
-	@Shadow private int outOfOpenWaterTicks;
-	@Shadow private int hookCountdown;
 	@Shadow abstract protected boolean isOpenOrWaterAround(BlockPos pos);
 	@Shadow private boolean caughtFish;
 	@Shadow private int removalTimer;
@@ -41,13 +39,15 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	private void tick(CallbackInfo info) {
 		PlayerEntity owner = getPlayerOwner();
-		if (owner == (PlayerEntity)FishingRulerClient.client.player) {
+		if (owner == FishingRulerClient.client.player) {
 			FishingRulerClient.updateText(Math.sqrt(squaredDistanceTo(owner)), true, getState());
 		}
 	}
 
 	private State getState() {
 		FishingRulerClient.State state = State.DEFAULT;
+
+		World world = getWorld();
 
 		BlockPos blockPos = this.getBlockPos();
 		FluidState fluidState = world.getFluidState(blockPos);
@@ -75,7 +75,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 			inWaterCountdown--;
 		}
 
-		if (onGround) {
+		if (isOnGround()) {
 			if (removalTimer >= 1100) {
 				state = State.NEAR_DESPAWN;
 			} else {

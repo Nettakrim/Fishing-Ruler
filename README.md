@@ -1,5 +1,5 @@
 ## Fishing Ruler
-*Ever wanted to fling an entity really far with a fishing rod but you keep snapping your line due to the distance? Well now you can!*
+*Ever wanted to fling an entity really far with a fishing rod, but you keep snapping your line due to the distance? Well now you can!*
 
 Fishing Ruler adds an indicator above the hotbar when using a fishing rod showing the current length of the line
 
@@ -7,7 +7,7 @@ Fishing Ruler adds an indicator above the hotbar when using a fishing rod showin
 
 Since the distance you can pull entities is proportional to the length of the line, this means you can easily maximise how far you fling something!
 
-...More usefully, the color of the text can tell you information about fishing - like whether the water source is large enough to fish up treasure, or changing color for a second whenever a fish bites your hook so you know when to reel in
+...More usefully, the color of the text can tell you information about fishing - like whether the water source is large enough to fish up treasure, or changing color for a second whenever a fish bites your hook, so you know when to reel in
 
 The possible text colors are:
 
