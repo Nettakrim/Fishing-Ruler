@@ -98,17 +98,17 @@ public class FishingRulerClient implements ClientModInitializer {
 	}
 
 	private static final TextColor[] stateToColor = new TextColor[] {
-		TextColor.parse("#AAAAAA"),  // DEFAULT
-		TextColor.parse("#FFFFFF"),  // ON_GROUND
-		TextColor.parse("#8EFF80"),  // IN_ENTITY
-		TextColor.parse("#009C9C"),  // IN_SMALL_WATER
-		TextColor.parse("#53EDED"),  // IN_OPEN_WATER
-		TextColor.parse("#265694"),  // NOT_EXPOSED
-		TextColor.parse("#518AED"),  // RAINED_ON
-		TextColor.parse("#54fBA8"),  // HAS_FISH
-		TextColor.parse("#ED691C"),  // NEAR_DESPAWN
-		TextColor.parse("#FFAA00"),  // NEAR_SNAP
-		TextColor.parse("#FF5555"),  // VERY_NEAR_SNAP
-		TextColor.parse("#DE2F2F")   // SNAPPED
+		TextColor.fromRgb(0xAAAAAA),  // DEFAULT
+		TextColor.fromRgb(0xFFFFFF),  // ON_GROUND
+		TextColor.fromRgb(0x8EFF80),  // IN_ENTITY
+		TextColor.fromRgb(0x009C9C),  // IN_SMALL_WATER
+		TextColor.fromRgb(0x53EDED),  // IN_OPEN_WATER
+		TextColor.fromRgb(0x265694),  // NOT_EXPOSED
+		TextColor.fromRgb(0x518AED),  // RAINED_ON
+		TextColor.fromRgb(0x54fBA8),  // HAS_FISH
+		TextColor.fromRgb(0xED691C),  // NEAR_DESPAWN
+		TextColor.fromRgb(0xFFAA00),  // NEAR_SNAP
+		TextColor.fromRgb(0xFF5555),  // VERY_NEAR_SNAP
+		TextColor.fromRgb(0xDE2F2F)   // SNAPPED
 	};
 }
