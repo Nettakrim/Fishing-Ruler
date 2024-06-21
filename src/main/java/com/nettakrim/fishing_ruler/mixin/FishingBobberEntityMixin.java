@@ -15,6 +15,7 @@ import net.minecraft.world.World;
 
 import org.spongepowered.asm.mixin.Mixin;
 import org.spongepowered.asm.mixin.Shadow;
+import org.spongepowered.asm.mixin.Unique;
 import org.spongepowered.asm.mixin.injection.At;
 import org.spongepowered.asm.mixin.injection.Inject;
 import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
@@ -32,18 +33,19 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	@Shadow private boolean caughtFish;
 	@Shadow private int removalTimer;
 
-	private int haveFishCountdown;
-	private int inWaterCountdown;
-	private boolean isOpenWater;
+	@Unique private int haveFishCountdown;
+	@Unique private int inWaterCountdown;
+	@Unique private boolean isOpenWater;
 
 	@Inject(at = @At("HEAD"), method = "tick()V")
 	private void tick(CallbackInfo info) {
 		PlayerEntity owner = getPlayerOwner();
 		if (owner == FishingRulerClient.client.player) {
-			FishingRulerClient.updateText(Math.sqrt(squaredDistanceTo(owner)), true, getState());
+			FishingRulerClient.updateText(Math.sqrt(squaredDistanceTo(owner)), true, getState(), this);
 		}
 	}
 
+	@Unique
 	private State getState() {
 		FishingRulerClient.State state = State.DEFAULT;
 

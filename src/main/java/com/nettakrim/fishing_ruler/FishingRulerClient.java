@@ -3,6 +3,11 @@ package com.nettakrim.fishing_ruler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
+import net.minecraft.component.type.ItemEnchantmentsComponent;
+import net.minecraft.enchantment.Enchantment;
+import net.minecraft.entity.Entity;
+import net.minecraft.entity.ItemEntity;
+import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
@@ -22,6 +27,13 @@ public class FishingRulerClient implements ClientModInitializer {
 	private static double lastLength = 0;
 	public static boolean allowSnapInfer = true;
 
+	public static boolean expectingFish;
+	private static Entity expectingBobber;
+
+	private static ItemEntity caughtItem;
+	private static int caughtForTicks;
+
+
 	@Override
 	public void onInitializeClient() {
 		client = MinecraftClient.getInstance();
@@ -35,7 +47,7 @@ public class FishingRulerClient implements ClientModInitializer {
 		//throwing the line straight down can cause the snapped indicator to not show up
 		if (allowSnapInfer) {
 			if (framesSinceUpdate == 1 && lastLength > 31 && lastLength <= 32) {
-				updateText(32.1D, false, State.DEFAULT);
+				updateText(32.1D, false, State.DEFAULT, null);
 			}
 		} else {
 			allowSnapInfer = true;
@@ -44,9 +56,44 @@ public class FishingRulerClient implements ClientModInitializer {
 		if (framesSinceUpdate < 8) {
 			framesSinceUpdate++;
 		}
+
+		if (caughtItem != null) {
+			if (caughtForTicks > 0) {
+				caughtForTicks--;
+			} else {
+				caughtItem = null;
+				return;
+			}
+
+			ItemStack itemStack = caughtItem.getStack();
+			if (itemStack.isEmpty()) return;
+
+			MutableText text = itemStack.getName().copy();
+			//for some reason enchanted books dont seem to be counted as having enchantments?
+			if (itemStack.hasEnchantments()) {
+				text.append(":");
+				ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
+				for (var entry : enchants.getEnchantments()) {
+					Enchantment enchantment = entry.value();
+					text.append(" ").append(enchantment.getName(enchants.getLevel(enchantment)));
+				}
+			}
+
+			sendMessage(text.setStyle(getStyle(State.HAS_FISH)), true);
+		}
 	}
 
-	public static void updateText(double length, boolean updateLast, State state) {
+	public static void updateText(double length, boolean updateLast, State state, Entity bobber) {
+		if (caughtItem != null) return;
+
+		if (state == State.HAS_FISH) {
+			expectingFish = true;
+			expectingBobber = bobber;
+		} else {
+			expectingFish = false;
+			expectingBobber = null;
+		}
+
 		MutableText text;
 		if (length > 32) {
 			text = Text.translatable(MODID+".snapped", formatDecimalPlaces(length));
@@ -57,9 +104,9 @@ public class FishingRulerClient implements ClientModInitializer {
 
 		if (length > 32) {
 			state = State.SNAPPED;
-		} else if (length > 30) {
+		} else if (length > 30 && !expectingFish) {
 			state = State.VERY_NEAR_SNAP;
-		} else if (length > 28) {
+		} else if (length > 28 && !expectingFish) {
 			state = State.NEAR_SNAP;
 		} 
 		text.setStyle(getStyle(state));
@@ -69,7 +116,7 @@ public class FishingRulerClient implements ClientModInitializer {
 			lastLength = length;
 		}
 
-		client.player.sendMessage(text, true); 
+		sendMessage(text, true);
 	}
 
 	private static String formatDecimalPlaces(double d) {
@@ -111,4 +158,22 @@ public class FishingRulerClient implements ClientModInitializer {
 		TextColor.fromRgb(0xFF5555),  // VERY_NEAR_SNAP
 		TextColor.fromRgb(0xDE2F2F)   // SNAPPED
 	};
+
+	public static void onEntitySpawn(Entity entity) {
+		if (client.player == null) return;
+		if (entity instanceof ItemEntity item) {
+			if (entity.distanceTo(expectingBobber) < 4) {
+				caughtItem = item;
+				expectingFish = false;
+				caughtForTicks = 10;
+			}
+		}
+	}
+
+	public static void sendMessage(Text text, boolean isActionBar) {
+		if (client.player == null) {
+			return;
+		}
+		client.player.sendMessage(text, isActionBar);
+	}
 }

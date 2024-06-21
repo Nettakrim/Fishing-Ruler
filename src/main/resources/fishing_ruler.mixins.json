@@ -6,6 +6,7 @@
   "mixins": [
   ],
   "client": [
+    "ClientWorldMixin",
     "FishingBobberEntityMixin",
     "FishingRodItemMixin"
   ],

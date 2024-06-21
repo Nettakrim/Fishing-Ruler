@@ -30,7 +30,7 @@ public class HelpCommand implements Command<FabricClientCommandSource> {
 			.append(getColoredText("snapped", State.SNAPPED))
 			.append(getColoredText("despawn", State.NEAR_DESPAWN));
 		
-		FishingRulerClient.client.player.sendMessage(text);
+		FishingRulerClient.sendMessage(text, false);
         return 1;
 	}
 
