@@ -71,12 +71,18 @@ public class FishingRulerClient implements ClientModInitializer {
 			MutableText text = itemStack.getName().copy();
 			//for some reason enchanted books dont seem to be counted as having enchantments?
 			if (itemStack.hasEnchantments()) {
-				text.append(":");
-				ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
-				for (var entry : enchants.getEnchantments()) {
-					Enchantment enchantment = entry.value();
-					text.append(" ").append(enchantment.getName(enchants.getLevel(enchantment)));
-				}
+				try {
+					MutableText enchantmentText = MutableText.of(new LiteralTextContent(""))
+					
+					ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
+					for (var entry : enchants.getEnchantments()) {
+						Enchantment enchantment = entry.value();
+						enchantmentText.append(" ").append(enchantment.getName(enchants.getLevel(enchantment)));
+					}
+					
+					text.append(":");
+					text.append(enchantmentText)
+				} catch (Exception ignored) {}
 			}
 
 			sendMessage(text.setStyle(getStyle(State.HAS_FISH)), true);
