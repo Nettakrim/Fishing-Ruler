@@ -1,0 +1,22 @@
+{
+    "fishing_ruler.length" : "%s/32",
+    "fishing_ruler.snapped" : "32.0/32",
+
+
+    "fishing_ruler.help.length" : "\nxx.x/32 - 目前長度（線在 32 格處斷開）\n\n",
+
+    "fishing_ruler.help.air" : "16.0/32 - 在空中\n",
+    "fishing_ruler.help.ground" : "16.0/32 - 在地上\n",
+    "fishing_ruler.help.entity" : "16.0/32 - 附著在實體上\n\n",
+
+    "fishing_ruler.help.small_water" : "16.0/32 - 在小型水源中\n",
+    "fishing_ruler.help.large_water" : "16.0/32 - 在大型水源中（可以釣到寶藏）\n",
+    "fishing_ruler.help.not_exposed" : "16.0/32 - 水沒有暴露在天空下（釣魚速度減慢 2 倍）\n",
+    "fishing_ruler.help.in_rain" : "16.0/32 - 在雨中（釣魚速度加快 20%）\n",
+    "fishing_ruler.help.fish_on_hook" : "16.0/32 - 魚咬鉤，可以被捕獲\n\n",
+
+    "fishing_ruler.help.length_amber" : "28.0/32 - 線長度超過 28 格\n",
+    "fishing_ruler.help.length_red" : "30.0/32 - 線長度超過 30 格\n",
+    "fishing_ruler.help.snapped" : "32.0/32 - 線因超過 32 格長而斷裂\n",
+    "fishing_ruler.help.despawn" : "16.0/32 - 在地上 55+ 秒（60 秒時消失）\n"
+}
