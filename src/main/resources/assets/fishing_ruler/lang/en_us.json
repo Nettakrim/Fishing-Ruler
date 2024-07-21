@@ -12,7 +12,7 @@
     "fishing_ruler.help.small_water" : "16.0/32 - In Small water source\n",
     "fishing_ruler.help.large_water" : "16.0/32 - In Large water source (Treasure can be Fished)\n",
     "fishing_ruler.help.not_exposed" : "16.0/32 - Water not open to Sky (2x Slower Fishing)\n",
-    "fishing_ruler.help.in_rain" : "16.0/32 - In Rain (20% quicker fishing)\n",
+    "fishing_ruler.help.in_rain" : "16.0/32 - In Rain (20% Quicker Fishing)\n",
     "fishing_ruler.help.fish_on_hook" : "16.0/32 - Fish Bit Hook and can be Caught\n\n",
 
     "fishing_ruler.help.length_amber" : "28.0/32 - Line Length More than 28 Blocks\n",
