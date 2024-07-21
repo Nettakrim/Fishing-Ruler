@@ -9,6 +9,7 @@ import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
 import net.minecraft.text.MutableText;
+import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
@@ -71,12 +72,18 @@ public class FishingRulerClient implements ClientModInitializer {
 			MutableText text = itemStack.getName().copy();
 			//for some reason enchanted books dont seem to be counted as having enchantments?
 			if (itemStack.hasEnchantments()) {
-				text.append(":");
-				ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
-				for (var entry : enchants.getEnchantments()) {
-					Enchantment enchantment = entry.value();
-					text.append(" ").append(enchantment.getName(enchants.getLevel(enchantment)));
-				}
+				try {
+					MutableText enchantmentText = MutableText.of(new PlainTextContent.Literal(""));
+
+					ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
+					for (var entry : enchants.getEnchantments()) {
+						Enchantment enchantment = entry.value();
+						enchantmentText.append(" ").append(enchantment.getName(enchants.getLevel(enchantment)));
+					}
+
+					text.append(":");
+					text.append(enchantmentText);
+				} catch (Exception ignored) {}
 			}
 
 			sendMessage(text.setStyle(getStyle(State.HAS_FISH)), true);
@@ -108,7 +115,7 @@ public class FishingRulerClient implements ClientModInitializer {
 			state = State.VERY_NEAR_SNAP;
 		} else if (length > 28 && !expectingFish) {
 			state = State.NEAR_SNAP;
-		} 
+		}
 		text.setStyle(getStyle(state));
 
 		if (updateLast && allowSnapInfer) {
