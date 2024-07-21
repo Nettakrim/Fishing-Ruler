@@ -77,8 +77,7 @@ public class FishingRulerClient implements ClientModInitializer {
 
 					ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
 					for (var entry : enchants.getEnchantments()) {
-						Enchantment enchantment = entry.value();
-						enchantmentText.append(" ").append(enchantment.getName(enchants.getLevel(enchantment)));
+						enchantmentText.append(" ").append(Enchantment.getName(entry, enchants.getLevel(entry)));
 					}
 
 					text.append(":");
