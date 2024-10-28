@@ -3,16 +3,11 @@ package com.nettakrim.fishing_ruler;
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
 import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
+import net.minecraft.enchantment.EnchantmentHelper;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
+import net.minecraft.text.*;
 
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -70,15 +65,13 @@ public class FishingRulerClient implements ClientModInitializer {
 			if (itemStack.isEmpty()) return;
 
 			MutableText text = itemStack.getName().copy();
-			//for some reason enchanted books dont seem to be counted as having enchantments?
 			if (itemStack.hasEnchantments()) {
 				try {
-					MutableText enchantmentText = MutableText.of(new PlainTextContent.Literal(""));
+					MutableText enchantmentText = MutableText.of(new LiteralTextContent(""));
 
-					ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
-					for (var entry : enchants.getEnchantments()) {
-						enchantmentText.append(" ").append(Enchantment.getName(entry, enchants.getLevel(entry)));
-					}
+					EnchantmentHelper.get(itemStack).forEach((enchantment, level) -> {
+						enchantmentText.append(" ").append(enchantment.getName(level));
+					});
 
 					text.append(":");
 					text.append(enchantmentText);

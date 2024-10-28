@@ -11,7 +11,7 @@ import org.spongepowered.asm.mixin.injection.callback.CallbackInfo;
 @Mixin(ClientWorld.class)
 public class ClientWorldMixin {
     @Inject(method = "addEntity", at = @At("TAIL"))
-    private void onEntitySpawn(Entity entity, CallbackInfo ci) {
+    private void onEntitySpawn(int id, Entity entity, CallbackInfo ci) {
         if (FishingRulerClient.expectingFish) {
             FishingRulerClient.onEntitySpawn(entity);
         }
