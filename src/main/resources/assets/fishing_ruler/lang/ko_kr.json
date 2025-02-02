@@ -1,0 +1,21 @@
+{
+    "fishing_ruler.length" : "%s/32",
+    "fishing_ruler.snapped" : "32.0/32",
+
+    "fishing_ruler.help.length" : "\nxx.x/32 - 현재 길이 (32블록에서 줄이 끊어짐)\n\n",
+
+    "fishing_ruler.help.air" : "16.0/32 - 공중에 있음\n",
+    "fishing_ruler.help.ground" : "16.0/32 - 땅에 있음\n",
+    "fishing_ruler.help.entity" : "16.0/32 - 개체에 부착됨\n\n",
+
+    "fishing_ruler.help.small_water" : "16.0/32 - 작은 물 속에 있음\n",
+    "fishing_ruler.help.large_water" : "16.0/32 - 큰 물 속에 있음 (보물을 낚을 수 있음)\n",
+    "fishing_ruler.help.not_exposed" : "16.0/32 - 하늘에 노출되지 않은 물 (낚시 속도 2배 느림)\n",
+    "fishing_ruler.help.in_rain" : "16.0/32 - 비가 오는 중 (낚시 속도 20% 빨라짐)\n",
+    "fishing_ruler.help.fish_on_hook" : "16.0/32 - 물고기가 낚싯바늘을 물었고 잡을 수 있음\n\n",
+
+    "fishing_ruler.help.length_amber" : "28.0/32 - 줄 길이가 28블록 이상\n",
+    "fishing_ruler.help.length_red" : "30.0/32 - 줄 길이가 30블록 이상\n",
+    "fishing_ruler.help.snapped" : "32.0/32 - 줄 길이가 32블록을 초과하여 끊어짐\n",
+    "fishing_ruler.help.despawn" : "16.0/32 - 땅에 55초 이상 있음 (60초 후 소멸)\n"
+}
