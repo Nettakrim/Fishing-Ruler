@@ -8,12 +8,14 @@ import net.minecraft.enchantment.Enchantment;
 import net.minecraft.entity.Entity;
 import net.minecraft.entity.ItemEntity;
 import net.minecraft.item.ItemStack;
+import net.minecraft.sound.SoundEvent;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.PlainTextContent;
 import net.minecraft.text.Style;
 import net.minecraft.text.Text;
 import net.minecraft.text.TextColor;
 
+import net.minecraft.util.Identifier;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -34,10 +36,14 @@ public class FishingRulerClient implements ClientModInitializer {
 	private static ItemEntity caughtItem;
 	private static int caughtForTicks;
 
+	public static Identifier biteSound;
+
+	public static Data data;
 
 	@Override
 	public void onInitializeClient() {
 		client = MinecraftClient.getInstance();
+		data = new Data();
 
 		FishingRulerCommands.initialize();
 
@@ -181,5 +187,12 @@ public class FishingRulerClient implements ClientModInitializer {
 			return;
 		}
 		client.player.sendMessage(text, isActionBar);
+	}
+
+	public static void playBiteSound() {
+		if (client.player == null || biteSound == null) {
+			return;
+		}
+		client.player.playSound(SoundEvent.of(biteSound));
 	}
 }

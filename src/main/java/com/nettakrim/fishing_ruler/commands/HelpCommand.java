@@ -3,14 +3,26 @@ package com.nettakrim.fishing_ruler.commands;
 import com.mojang.brigadier.Command;
 import com.mojang.brigadier.context.CommandContext;
 import com.mojang.brigadier.exceptions.CommandSyntaxException;
+import com.mojang.brigadier.tree.LiteralCommandNode;
+import com.mojang.brigadier.tree.RootCommandNode;
 import com.nettakrim.fishing_ruler.FishingRulerClient;
 import com.nettakrim.fishing_ruler.FishingRulerClient.State;
 
+import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
 import net.minecraft.text.MutableText;
 import net.minecraft.text.Text;
 
 public class HelpCommand implements Command<FabricClientCommandSource> {
+	public static void register(RootCommandNode<FabricClientCommandSource> root) {
+		LiteralCommandNode<FabricClientCommandSource> helpNode = ClientCommandManager
+				.literal("fishingruler:help")
+				.executes(new HelpCommand())
+				.build();
+
+		root.addChild(helpNode);
+	}
+
 	@Override
 	public int run(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
 		Text text = getColoredText("length", State.ON_GROUND)

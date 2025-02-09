@@ -90,6 +90,9 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 		}
 
 		if (caughtFish) {
+			if (haveFishCountdown == 0) {
+				FishingRulerClient.playBiteSound();
+			}
 			haveFishCountdown = 20;
 		}
 
