@@ -49,7 +49,7 @@ public abstract class FishingBobberEntityMixin extends ProjectileEntity {
 	private State getState() {
 		FishingRulerClient.State state = State.DEFAULT;
 
-		World world = getWorld();
+		World world = getEntityWorld();
 
 		BlockPos blockPos = this.getBlockPos();
 		FluidState fluidState = world.getFluidState(blockPos);
