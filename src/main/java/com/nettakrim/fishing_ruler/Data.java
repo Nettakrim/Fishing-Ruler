@@ -1,8 +1,7 @@
 package com.nettakrim.fishing_ruler;
 
 import net.fabricmc.loader.api.FabricLoader;
-import net.minecraft.util.Identifier;
-
+import net.minecraft.resources.Identifier;
 import java.io.File;
 import java.io.FileWriter;
 import java.io.IOException;
@@ -38,7 +37,7 @@ public class Data {
             Scanner scanner = new Scanner(data);
 
             if (scanner.hasNext()) {
-                FishingRulerClient.biteSound = Identifier.of(scanner.nextLine());
+                FishingRulerClient.biteSound = Identifier.parse(scanner.nextLine());
             }
 
             scanner.close();

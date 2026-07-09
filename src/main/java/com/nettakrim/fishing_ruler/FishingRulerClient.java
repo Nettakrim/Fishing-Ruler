@@ -2,20 +2,19 @@ package com.nettakrim.fishing_ruler;
 
 import net.fabricmc.api.ClientModInitializer;
 import net.fabricmc.fabric.api.client.event.lifecycle.v1.ClientTickEvents;
-import net.minecraft.client.MinecraftClient;
-import net.minecraft.component.type.ItemEnchantmentsComponent;
-import net.minecraft.enchantment.Enchantment;
-import net.minecraft.entity.Entity;
-import net.minecraft.entity.ItemEntity;
-import net.minecraft.item.ItemStack;
-import net.minecraft.sound.SoundEvent;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.PlainTextContent;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.text.TextColor;
-
-import net.minecraft.util.Identifier;
+import net.minecraft.client.Minecraft;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.network.chat.Style;
+import net.minecraft.network.chat.TextColor;
+import net.minecraft.network.chat.contents.PlainTextContents;
+import net.minecraft.resources.Identifier;
+import net.minecraft.sounds.SoundEvent;
+import net.minecraft.world.entity.Entity;
+import net.minecraft.world.entity.item.ItemEntity;
+import net.minecraft.world.item.ItemStack;
+import net.minecraft.world.item.enchantment.Enchantment;
+import net.minecraft.world.item.enchantment.ItemEnchantments;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
@@ -25,7 +24,7 @@ public class FishingRulerClient implements ClientModInitializer {
 	public static final String MODID = "fishing_ruler";
 	public static final Logger LOGGER = LoggerFactory.getLogger("Fishing Ruler");
 
-	public static MinecraftClient client;
+	public static Minecraft client;
 	private static int framesSinceUpdate = 8;
 	private static double lastLength = 0;
 	public static boolean allowSnapInfer = true;
@@ -42,19 +41,19 @@ public class FishingRulerClient implements ClientModInitializer {
 
 	@Override
 	public void onInitializeClient() {
-		client = MinecraftClient.getInstance();
+		client = Minecraft.getInstance();
 		data = new Data();
 
 		FishingRulerCommands.initialize();
 
-		ClientTickEvents.END_CLIENT_TICK.register(client -> update());
+		ClientTickEvents.END_CLIENT_TICK.register(_ -> update());
 	}
 
 	public static void update() {
 		//throwing the line straight down can cause the snapped indicator to not show up
 		if (allowSnapInfer) {
 			if (framesSinceUpdate == 1 && lastLength > 31 && lastLength <= 32) {
-				updateText(32.1D, false, State.DEFAULT, null);
+				updateText(32.1D, false, State.IN_AIR, null);
 			}
 		} else {
 			allowSnapInfer = true;
@@ -72,18 +71,18 @@ public class FishingRulerClient implements ClientModInitializer {
 				return;
 			}
 
-			ItemStack itemStack = caughtItem.getStack();
+			ItemStack itemStack = caughtItem.getItem();
 			if (itemStack.isEmpty()) return;
 
-			MutableText text = itemStack.getName().copy();
+			MutableComponent text = itemStack.getHoverName().copy();
 			//for some reason enchanted books dont seem to be counted as having enchantments?
-			if (itemStack.hasEnchantments()) {
+			if (itemStack.isEnchanted()) {
 				try {
-					MutableText enchantmentText = MutableText.of(new PlainTextContent.Literal(""));
+					MutableComponent enchantmentText = MutableComponent.create(new PlainTextContents.LiteralContents(""));
 
-					ItemEnchantmentsComponent enchants = itemStack.getEnchantments();
-					for (var entry : enchants.getEnchantments()) {
-						enchantmentText.append(" ").append(Enchantment.getName(entry, enchants.getLevel(entry)));
+					ItemEnchantments enchants = itemStack.getEnchantments();
+					for (var entry : enchants.keySet()) {
+						enchantmentText.append(" ").append(Enchantment.getFullname(entry, enchants.getLevel(entry)));
 					}
 
 					text.append(":");
@@ -106,12 +105,12 @@ public class FishingRulerClient implements ClientModInitializer {
 			expectingBobber = null;
 		}
 
-		MutableText text;
+		MutableComponent text;
 		if (length > 32) {
-			text = Text.translatable(MODID+".snapped", formatDecimalPlaces(length));
+			text = Component.translatable(MODID+".snapped", formatDecimalPlaces(length));
 			framesSinceUpdate = 8;
 		} else {
-			text = Text.translatable(MODID+".length", formatDecimalPlaces(length));
+			text = Component.translatable(MODID+".length", formatDecimalPlaces(length));
 		}
 
 		if (length > 32) {
@@ -138,7 +137,7 @@ public class FishingRulerClient implements ClientModInitializer {
 	}
 
 	public enum State {
-		DEFAULT,
+		IN_AIR,
 		ON_GROUND,
 		IN_ENTITY,
 		IN_SMALL_WATER,
@@ -182,17 +181,22 @@ public class FishingRulerClient implements ClientModInitializer {
 		}
 	}
 
-	public static void sendMessage(Text text, boolean isActionBar) {
+	public static void sendMessage(Component text, boolean isActionBar) {
 		if (client.player == null) {
 			return;
 		}
-		client.player.sendMessage(text, isActionBar);
+
+		if (isActionBar) {
+			client.player.sendOverlayMessage(text);
+		} else {
+			client.player.sendSystemMessage(text);
+		}
 	}
 
 	public static void playBiteSound() {
 		if (client.player == null || biteSound == null) {
 			return;
 		}
-		client.player.playSound(SoundEvent.of(biteSound));
+		client.player.makeSound(SoundEvent.createVariableRangeEvent(biteSound));
 	}
 }

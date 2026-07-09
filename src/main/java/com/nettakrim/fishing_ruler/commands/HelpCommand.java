@@ -8,14 +8,14 @@ import com.mojang.brigadier.tree.RootCommandNode;
 import com.nettakrim.fishing_ruler.FishingRulerClient;
 import com.nettakrim.fishing_ruler.FishingRulerClient.State;
 
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.text.MutableText;
-import net.minecraft.text.Text;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.MutableComponent;
 
 public class HelpCommand implements Command<FabricClientCommandSource> {
 	public static void register(RootCommandNode<FabricClientCommandSource> root) {
-		LiteralCommandNode<FabricClientCommandSource> helpNode = ClientCommandManager
+		LiteralCommandNode<FabricClientCommandSource> helpNode = ClientCommands
 				.literal("fishingruler:help")
 				.executes(new HelpCommand())
 				.build();
@@ -25,9 +25,9 @@ public class HelpCommand implements Command<FabricClientCommandSource> {
 
 	@Override
 	public int run(CommandContext<FabricClientCommandSource> context) throws CommandSyntaxException {
-		Text text = getColoredText("length", State.ON_GROUND)
+		Component text = getColoredText("length", State.ON_GROUND)
 
-			.append(getColoredText("air", State.DEFAULT))
+			.append(getColoredText("air", State.IN_AIR))
 			.append(getColoredText("ground", State.ON_GROUND))
 			.append(getColoredText("entity", State.IN_ENTITY))
 		
@@ -46,7 +46,7 @@ public class HelpCommand implements Command<FabricClientCommandSource> {
         return 1;
 	}
 
-	private MutableText getColoredText(String key, State state) {
-		return Text.translatable(FishingRulerClient.MODID+".help."+key).setStyle(FishingRulerClient.getStyle(state));
+	private MutableComponent getColoredText(String key, State state) {
+		return Component.translatable(FishingRulerClient.MODID+".help."+key).setStyle(FishingRulerClient.getStyle(state));
 	}
 }

@@ -4,23 +4,23 @@ import com.mojang.brigadier.suggestion.SuggestionProvider;
 import com.mojang.brigadier.tree.LiteralCommandNode;
 import com.mojang.brigadier.tree.RootCommandNode;
 import com.nettakrim.fishing_ruler.FishingRulerClient;
-import net.fabricmc.fabric.api.client.command.v2.ClientCommandManager;
+import net.fabricmc.fabric.api.client.command.v2.ClientCommands;
 import net.fabricmc.fabric.api.client.command.v2.FabricClientCommandSource;
-import net.minecraft.command.CommandSource;
-import net.minecraft.command.argument.IdentifierArgumentType;
-import net.minecraft.text.Style;
-import net.minecraft.text.Text;
-import net.minecraft.util.Identifier;
+import net.minecraft.commands.SharedSuggestionProvider;
+import net.minecraft.commands.arguments.IdentifierArgument;
+import net.minecraft.network.chat.Component;
+import net.minecraft.network.chat.Style;
+import net.minecraft.resources.Identifier;
 
 public class BiteSoundCommand {
-    private static final SuggestionProvider<FabricClientCommandSource> sounds = (context, builder) -> CommandSource.suggestIdentifiers(context.getSource().getSoundIds(), builder);
+    private static final SuggestionProvider<FabricClientCommandSource> sounds = (context, builder) -> SharedSuggestionProvider.suggestResource(context.getSource().getAvailableSounds(), builder);
 
     public static void register(RootCommandNode<FabricClientCommandSource> root) {
-        LiteralCommandNode<FabricClientCommandSource> biteSoundNode = ClientCommandManager
+        LiteralCommandNode<FabricClientCommandSource> biteSoundNode = ClientCommands
         .literal("fishingruler:bite_sound")
         .then(
-            ClientCommandManager.literal("set").then(
-                ClientCommandManager.argument("sound", IdentifierArgumentType.identifier()).suggests(sounds)
+            ClientCommands.literal("set").then(
+                ClientCommands.argument("sound", IdentifierArgument.id()).suggests(sounds)
                 .executes(context -> {
                     setSound(context.getArgument("sound", Identifier.class));
                     FishingRulerClient.playBiteSound();
@@ -29,15 +29,15 @@ public class BiteSoundCommand {
             )
         )
         .then(
-            ClientCommandManager.literal("query")
+            ClientCommands.literal("query")
             .executes(context -> {
-                FishingRulerClient.sendMessage(Text.literal(String.valueOf(FishingRulerClient.biteSound)).setStyle(Style.EMPTY.withColor(0xAAAAAA)), false);
+                FishingRulerClient.sendMessage(Component.literal(String.valueOf(FishingRulerClient.biteSound)).setStyle(Style.EMPTY.withColor(0xAAAAAA)), false);
                 FishingRulerClient.playBiteSound();
                 return 1;
             })
         )
         .then(
-            ClientCommandManager.literal("clear")
+            ClientCommands.literal("clear")
             .executes(context -> {
                 setSound(null);
                 return 1;
